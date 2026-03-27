@@ -88,7 +88,7 @@ void outputResult(vector<string> keywords, double executionTime, long long compa
     fout << "--------------------------------\n";
     fout << "Algorithm: " << algorithmFullName[IDAlgorithm] << "\n";
     fout << "Comparisons: " << comparisons << "\n";
-    fout << "Execution Time: " << setprecision(3) << fixed << executionTime;
+    fout << "Execution Time: " << setprecision(3) << fixed << executionTime << " ms";
 	fout.close();
 }
 
