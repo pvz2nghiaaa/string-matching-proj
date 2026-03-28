@@ -33,9 +33,9 @@ vector<vector<pair<pair<int, int>, pair<int, int>>>> Rabin_karp(vector<vector<ch
 
         ll HashWord = comp_hash(word, m);
 
-        ll h_inv = 1;
-        for (int i = 0; i < m; i++)
-            h_inv = (h_inv * BASE) % MOD;
+        // ll h_inv = 1;
+        // for (int i = 0; i < m; i++)
+        //     h_inv = (h_inv * BASE) % MOD;
 
         for (int r = 0; r < rows; r++)
         {
@@ -79,10 +79,10 @@ vector<vector<pair<pair<int, int>, pair<int, int>>>> Rabin_karp(vector<vector<ch
     return all_res;
 }
 
-ll comp_hash_OC(const string &str, int m)
+ll comp_hash_OC(const string &str, int m, int &comparisons)
 {
     ll h = 0;
-    for (int i = 0; i < m; i++)
+    for (int i = 0; ++comparisons, i < m; i++)
     {
         h += (h * BASE + (str[i] - 'a' + 1)) % MOD;
     }
@@ -107,42 +107,43 @@ vector<vector<pair<pair<int, int>, pair<int, int>>>> Rabin_karpOperationCount(ve
             continue;
         }
 
-        ll HashWord = comp_hash(word, m);
+        ll HashWord = comp_hash_OC(word, m, comparisons);
 
-        ll h_inv = 1;
-        for (int i = 0; i < m; i++)
-            h_inv = (h_inv * BASE) % MOD;
+        // ll h_inv = 1;
+        // for (int i = 0; i < m; i++)
+        //     h_inv = (h_inv * BASE) % MOD;
 
-        for (int r = 0; r < rows; r++)
+        for (int r = 0; ++comparisons, r < rows; r++)
         {
-            for (int c = 0; c < cols; c++)
+            for (int c = 0; ++comparisons, c < cols; c++)
             {
-                for (int gir = 0; gir < 8; gir++)
+                for (int gir = 0; ++comparisons, gir < 8; gir++)
                 {
                     int endRow = r + (m - 1) * dx[gir];
                     int endCol = c + (m - 1) * dy[gir];
 
-                    if (endRow > 0 && endRow < rows && endCol > 0 && endCol < cols)
+                    if (++comparisons, endRow > 0 && endRow < rows && endCol > 0 && endCol < cols)
                     {
                         ll h_cur = 0;
                         bool match = 1;
 
-                        for (int i = 0; i < m; i++)
+                        for (int i = 0; ++comparisons, i < m; i++)
                         {
                             h_cur += (h_cur * BASE + grids[r + i + dx[gir]][c + i + dy[gir]] - 'a' + 1) % MOD;
                         }
-
+                        ++comparisons;
                         if (h_cur == HashWord)
                         {
-                            for (int i = 0; i < m; i++)
+                            for (int i = 0; ++comparisons, i < m; i++)
                             {
+                                ++comparisons;
                                 if (grids[r + i + dx[gir]][c + i + dy[gir]] != word[i])
                                 {
                                     match = 0;
                                     break;
                                 }
                             }
-                            if (match)
+                            if (++comparisons, match)
                                 res.push_back({{r, c}, {endRow, endCol}});
                         }
                     }
