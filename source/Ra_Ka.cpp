@@ -1,15 +1,14 @@
 #include "def.h"
 
-typedef long long ll;
-const ll BASE = 31;
-const ll MOD = 1e9 + 7;
+const long long BASE = 31;
+const long long MOD = 1e9 + 7;
 
-ll comp_hash(const string &str, int m)
+long long comp_hash(const string &str, int m)
 {
-    ll h = 0;
+    long long h = 0;
     for (int i = 0; i < m; i++)
     {
-        h += (h * BASE + (str[i] - 'a' + 1)) % MOD;
+        h = (h * BASE + (str[i] - 'a' + 1)) % MOD;
     }
     return h;
 }
@@ -31,7 +30,7 @@ vector<vector<pair<pair<int, int>, pair<int, int>>>> Rabin_karp(vector<vector<ch
             continue;
         }
 
-        ll HashWord = comp_hash(word, m);
+        long long HashWord = comp_hash(word, m);
 
         // ll h_inv = 1;
         // for (int i = 0; i < m; i++)
@@ -48,7 +47,7 @@ vector<vector<pair<pair<int, int>, pair<int, int>>>> Rabin_karp(vector<vector<ch
 
                     if (endRow > 0 && endRow < rows && endCol > 0 && endCol < cols)
                     {
-                        ll h_cur = 0;
+                        long long h_cur = 0;
                         bool match = 1;
 
                         for (int i = 0; i < m; i++)
@@ -79,17 +78,17 @@ vector<vector<pair<pair<int, int>, pair<int, int>>>> Rabin_karp(vector<vector<ch
     return all_res;
 }
 
-ll comp_hash_OC(const string &str, int m, int &comparisons)
+long long comp_hash_OC(const string &str, int m, long long &comparisons)
 {
-    ll h = 0;
+    long long h = 0;
     for (int i = 0; ++comparisons, i < m; i++)
     {
-        h += (h * BASE + (str[i] - 'a' + 1)) % MOD;
+        h = (h * BASE + (str[i] - 'a' + 1)) % MOD;
     }
     return h;
 }
 
-vector<vector<pair<pair<int, int>, pair<int, int>>>> Rabin_karpOperationCount(vector<vector<char>> &grids, vector<string> &keywords, int &comparisons)
+vector<vector<pair<pair<int, int>, pair<int, int>>>> Rabin_karpOperationCount(vector<vector<char>> &grids, vector<string> &keywords, long long &comparisons)
 {
     int rows = grids.size();
     int cols = (rows > 0) ? grids[0].size() : 0;
@@ -98,7 +97,6 @@ vector<vector<pair<pair<int, int>, pair<int, int>>>> Rabin_karpOperationCount(ve
 
     for (const auto &word : keywords)
     {
-        ++comparisons;
         vector<pair<pair<int, int>, pair<int, int>>> res;
         int m = word.length();
         if (++comparisons, m == 0 || m > max(rows, cols))
@@ -107,7 +105,7 @@ vector<vector<pair<pair<int, int>, pair<int, int>>>> Rabin_karpOperationCount(ve
             continue;
         }
 
-        ll HashWord = comp_hash_OC(word, m, comparisons);
+        long long HashWord = comp_hash_OC(word, m, comparisons);
 
         // ll h_inv = 1;
         // for (int i = 0; i < m; i++)
@@ -124,7 +122,7 @@ vector<vector<pair<pair<int, int>, pair<int, int>>>> Rabin_karpOperationCount(ve
 
                     if (++comparisons, endRow > 0 && endRow < rows && endCol > 0 && endCol < cols)
                     {
-                        ll h_cur = 0;
+                        long long h_cur = 0;
                         bool match = 1;
 
                         for (int i = 0; ++comparisons, i < m; i++)
