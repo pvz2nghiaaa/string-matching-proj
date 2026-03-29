@@ -1,4 +1,4 @@
-#include "Boyer-Moore.h"
+#include "def.h"
 
 using namespace std;
 vector<int> buildCharTable(const string& keyword){
@@ -96,7 +96,7 @@ vector<vector<pair<pair<int, int>, pair<int, int>>>> Boyer_Moore(vector<vector<c
     return result;
 }
 
-vector<vector<pair<pair<int, int>, pair<int, int>>>> Boyer_Moore(vector<vector<char>>& grids,vector<string>& keywords, int& comparisons){
+vector<vector<pair<pair<int, int>, pair<int, int>>>> Boyer_Moore(vector<vector<char>>& grids,vector<string>& keywords, long long& comparisons){
     
     
     vector<vector<pair<pair<int, int>, pair<int, int>>>> result;

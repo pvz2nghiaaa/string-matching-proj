@@ -4,6 +4,9 @@ typedef long long ll;
 const ll BASE = 31;
 const ll MOD = 1e9 + 7;
 
+int dx[] = {0, 0, 1, -1, -1, -1, 1, 1};
+int dy[] = {1, -1, 0, 0, 1, -1, 1, -1};
+
 ll comp_hash(const string &str, int m)
 {
     ll h = 0;

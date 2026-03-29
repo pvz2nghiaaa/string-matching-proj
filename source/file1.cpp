@@ -1,11 +1,4 @@
-#include <iostream>
-#include <iomanip>
-#include <cstring>
-#include <vector>
-#include <chrono>
-#include <fstream>
-#include <utility>
-//#include "def.h"
+#include "def.h"
 
 using namespace std;
 
@@ -18,11 +11,11 @@ const char* algorithmPrototypeName[] = {
 const char* algorithmFullName[] = {
 	"Brute-Force", "Rabin-Karp", "KMP", "Boyer-Moore"
 };
-vector<vector<pair<pair<int, int>, pair<int, int>>>> (*const listSort[])(vector<vector<char>>, vector<string>) = {
-
+vector<vector<pair<pair<int, int>, pair<int, int>>>> (*const listSort[])(vector<vector<char>>&, vector<string>&) = {
+	nullptr, nullptr, nullptr, Boyer_Moore
 };
-vector<vector<pair<pair<int, int>, pair<int, int>>>> (*const listSortComparisonsCount[])(vector<vector<char>>, vector<string>, long long&) = {
-
+vector<vector<pair<pair<int, int>, pair<int, int>>>> (*const listSortComparisonsCount[])(vector<vector<char>>&, vector<string>&, long long&) = {
+	nullptr, nullptr, nullptr, Boyer_Moore
 };
 
 // file name
@@ -81,7 +74,7 @@ void outputResult(vector<string> keywords, double executionTime, long long compa
             int n = listLocation.size();
             for (int j = 0; j < n; j++)
                 fout << "(" << listLocation[j].first.first << ", " << listLocation[j].first.second << ") -> " <<
-                "(" << listLocation[j].second.first << ", " << listLocation[j].second.second << ");";
+                "(" << listLocation[j].second.first << ", " << listLocation[j].second.second << "); ";
             fout << "\n";
         }
     }
