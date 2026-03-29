@@ -4,11 +4,11 @@ using namespace std;
 vector<int> buildCharTable(const string& keyword){
 
     //table for saving positions of char relative to the keyword string
-    vector<int> charTable(256, -1);
+    vector<int> charTable(26, -1);
     int m = keyword.size();
     
     for(int i = 0; i < m; i++){
-        int charToInt = keyword[i];
+        int charToInt = keyword[i] - 'a';
         charTable[charToInt] = i;
     }
     return charTable;
@@ -16,11 +16,10 @@ vector<int> buildCharTable(const string& keyword){
 
 vector<vector<pair<pair<int, int>, pair<int, int>>>> Boyer_Moore(vector<vector<char>>& grids,vector<string>& keywords){
     
+    vector<vector<pair<pair<int, int>, pair<int, int>>>> result;
 
     int total_row = grids.size(),total_col = grids[0].size();
     int total_keywords = keywords.size();
-
-    vector<vector<pair<pair<int, int>, pair<int, int>>>> result(total_keywords);
 
     for(int i=0;i<total_keywords;i++){
         vector<pair<pair<int, int>, pair<int, int>>> occurences;
@@ -42,7 +41,7 @@ vector<vector<pair<pair<int, int>, pair<int, int>>>> Boyer_Moore(vector<vector<c
 
                     if(keyword[idx] != grids[row][idx_from_tracker]){
 
-                        int trackerToInt = grids[row][idx_from_tracker];
+                        int trackerToInt = grids[row][idx_from_tracker] - 'a';
                         if( charTable[trackerToInt] == -1 ){
                             //if the char at the tracker is not in the table so we move the tracker accordingly
                             tracker += k_size - (tracker - idx_from_tracker);
@@ -62,10 +61,13 @@ vector<vector<pair<pair<int, int>, pair<int, int>>>> Boyer_Moore(vector<vector<c
             }
         }
 
+
         //exacly the same but for columns
         for(int col = 0 ; col<total_col ; col++){
-
             int k_size = keyword.size();
+            if(k_size == 1){
+                continue;
+            }
             int tracker = k_size-1;
             while(tracker < total_row){
 
@@ -75,7 +77,7 @@ vector<vector<pair<pair<int, int>, pair<int, int>>>> Boyer_Moore(vector<vector<c
 
                     if(keyword[idx] != grids[idx_from_tracker][col]){
             
-                        int trackerToInt = grids[idx_from_tracker][col];
+                        int trackerToInt = grids[idx_from_tracker][col] - 'a';
                         if( charTable[trackerToInt] == -1 ){
                             tracker += k_size - (tracker - idx_from_tracker);
                         }
@@ -91,24 +93,17 @@ vector<vector<pair<pair<int, int>, pair<int, int>>>> Boyer_Moore(vector<vector<c
                 }
             }
         }
-        sort(occurences.begin(), occurences.end());
-        for(int j = 0; j < occurences.size(); j++){
-            if(j == 0 || occurences[j] != occurences[j-1]){
-                result[i].push_back(occurences[j]);
-            }
-        }
+        result.push_back(occurences);
     }
     return result;
 }
 
 vector<vector<pair<pair<int, int>, pair<int, int>>>> Boyer_Moore(vector<vector<char>>& grids,vector<string>& keywords, long long& comparisons){
     
-    
+    vector<vector<pair<pair<int, int>, pair<int, int>>>> result;
 
     int total_row = grids.size(),total_col = grids[0].size();
     int total_keywords = keywords.size();
-
-    vector<vector<pair<pair<int, int>, pair<int, int>>>> result(total_keywords);
 
     for(int i=0;i<total_keywords;i++){
 
@@ -129,7 +124,7 @@ vector<vector<pair<pair<int, int>, pair<int, int>>>> Boyer_Moore(vector<vector<c
 
                     if(comparisons++,keyword[idx] != grids[row][idx_from_tracker]){
             
-                        int trackerToInt = grids[row][idx_from_tracker];
+                        int trackerToInt = grids[row][idx_from_tracker] - 'a';
                         if( charTable[trackerToInt] == -1 ){
                             tracker += k_size - (tracker - idx_from_tracker);
                         }
@@ -159,7 +154,7 @@ vector<vector<pair<pair<int, int>, pair<int, int>>>> Boyer_Moore(vector<vector<c
 
                     if(comparisons++ ,keyword[idx] != grids[idx_from_tracker][col]){
             
-                        int trackerToInt = grids[idx_from_tracker][col];
+                        int trackerToInt = grids[idx_from_tracker][col] - 'a';
                         if( charTable[trackerToInt] == -1 ){
                             tracker += k_size - (tracker - idx_from_tracker);
                         }
@@ -175,12 +170,7 @@ vector<vector<pair<pair<int, int>, pair<int, int>>>> Boyer_Moore(vector<vector<c
                 }
             }
         }
-        sort(occurences.begin(), occurences.end());
-        for(int j = 0; j < occurences.size(); j++){
-            if(j == 0 || occurences[j] != occurences[j-1]){
-                result[i].push_back(occurences[j]);
-            }
-        }
+        result.push_back(occurences);
     }
     return result;
 }
