@@ -16,11 +16,11 @@ vector<int> buildCharTable(const string& keyword){
 
 vector<vector<pair<pair<int, int>, pair<int, int>>>> Boyer_Moore(vector<vector<char>>& grids,vector<string>& keywords){
     
-    
-    vector<vector<pair<pair<int, int>, pair<int, int>>>> result;
 
     int total_row = grids.size(),total_col = grids[0].size();
     int total_keywords = keywords.size();
+
+    vector<vector<pair<pair<int, int>, pair<int, int>>>> result(total_keywords);
 
     for(int i=0;i<total_keywords;i++){
         vector<pair<pair<int, int>, pair<int, int>>> occurences;
@@ -91,7 +91,12 @@ vector<vector<pair<pair<int, int>, pair<int, int>>>> Boyer_Moore(vector<vector<c
                 }
             }
         }
-        result.push_back(occurences);
+        sort(occurences.begin(), occurences.end());
+        for(int j = 0; j < occurences.size(); j++){
+            if(j == 0 || occurences[j] != occurences[j-1]){
+                result[i].push_back(occurences[j]);
+            }
+        }
     }
     return result;
 }
@@ -99,10 +104,11 @@ vector<vector<pair<pair<int, int>, pair<int, int>>>> Boyer_Moore(vector<vector<c
 vector<vector<pair<pair<int, int>, pair<int, int>>>> Boyer_Moore(vector<vector<char>>& grids,vector<string>& keywords, long long& comparisons){
     
     
-    vector<vector<pair<pair<int, int>, pair<int, int>>>> result;
 
     int total_row = grids.size(),total_col = grids[0].size();
     int total_keywords = keywords.size();
+
+    vector<vector<pair<pair<int, int>, pair<int, int>>>> result(total_keywords);
 
     for(int i=0;i<total_keywords;i++){
 
@@ -169,7 +175,12 @@ vector<vector<pair<pair<int, int>, pair<int, int>>>> Boyer_Moore(vector<vector<c
                 }
             }
         }
-        result.push_back(occurences);
+        sort(occurences.begin(), occurences.end());
+        for(int j = 0; j < occurences.size(); j++){
+            if(j == 0 || occurences[j] != occurences[j-1]){
+                result[i].push_back(occurences[j]);
+            }
+        }
     }
     return result;
 }
