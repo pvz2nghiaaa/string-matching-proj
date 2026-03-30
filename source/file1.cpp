@@ -12,10 +12,10 @@ const char* algorithmFullName[] = {
 	"Brute-Force", "Rabin-Karp", "KMP", "Boyer-Moore"
 };
 vector<vector<pair<pair<int, int>, pair<int, int>>>> (*const listSort[])(vector<vector<char>>&, vector<string>&) = {
-	nullptr, nullptr, nullptr, Boyer_Moore
+	nullptr, Rabin_karp, nullptr, Boyer_Moore
 };
 vector<vector<pair<pair<int, int>, pair<int, int>>>> (*const listSortComparisonsCount[])(vector<vector<char>>&, vector<string>&, long long&) = {
-	nullptr, nullptr, nullptr, Boyer_Moore
+	nullptr, Rabin_karpOperationCount, nullptr, Boyer_Moore
 };
 
 // file name
