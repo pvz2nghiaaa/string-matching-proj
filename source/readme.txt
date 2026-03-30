@@ -13,7 +13,7 @@ Step 3: The usage is as follows:
 	Options:
 		-a [algorithm]		Select algorithm: bf, rk, kmp, bm (respectively referred to as brute-force, Rabin-Karp, Knuth-Morris-Pratt, Boyer-Moore algorithms)
 		-i [input_file]		Path to user-provided data file
-		-o [output_file]		Path to the result output file
+		-o [output_file]	Path to the result output file
 
 	Example:
 		crossword.exe -a kmp -i <filepath>/source/tests/puzzle01.txt -o solution.txt
