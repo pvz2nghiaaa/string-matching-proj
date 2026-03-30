@@ -15,11 +15,15 @@ using namespace std;
 
 vector<vector<pair<pair<int, int>, pair<int, int>>>> bruteforce(vector<vector<char>>& grids, vector<string>& keywords);
 vector<vector<pair<pair<int, int>, pair<int, int>>>> bruteforce(vector<vector<char>>& grids, vector<string>& keywords, long long& comparisons);
+
 vector<vector<pair<pair<int, int>, pair<int, int>>>> Boyer_Moore(vector<vector<char>>& grids, vector<string>& keywords, long long& comparisons);
 vector<vector<pair<pair<int, int>, pair<int, int>>>> Boyer_Moore(vector<vector<char>>& grids, vector<string>& keywords);
 
 vector<vector<pair<pair<int, int>, pair<int, int>>>> Rabin_karpOperationCount(vector<vector<char>> &grids, vector<string> &keywords, long long &comparisons);
 vector<vector<pair<pair<int, int>, pair<int, int>>>> Rabin_karp(vector<vector<char>> &grids, vector<string> &keywords);
+
+vector<vector<pair<pair<int, int>, pair<int, int>>>> KMP(vector<vector<char>>& grids, vector<string>& keywords);
+vector<vector<pair<pair<int, int>, pair<int, int>>>> KMPComparisonCounts(vector<vector<char>>& grids, vector<string>& keywords, long long& comparisons);
 
 
 extern int dx[];
