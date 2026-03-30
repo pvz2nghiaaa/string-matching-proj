@@ -12,6 +12,8 @@
 
 using namespace std;
 
+vector<vector<pair<pair<int, int>, pair<int, int>>>> bruteforce(vector<vector<char>>& grids, vector<string>& keywords);
+vector<vector<pair<pair<int, int>, pair<int, int>>>> bruteforce(vector<vector<char>>& grids, vector<string>& keywords, long long& comparisons);
 vector<vector<pair<pair<int, int>, pair<int, int>>>> Boyer_Moore(vector<vector<char>>& grids, vector<string>& keywords, long long& comparisons);
 vector<vector<pair<pair<int, int>, pair<int, int>>>> Boyer_Moore(vector<vector<char>>& grids, vector<string>& keywords);
 
