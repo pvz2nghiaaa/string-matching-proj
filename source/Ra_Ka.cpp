@@ -56,14 +56,14 @@ vector<vector<pair<pair<int, int>, pair<int, int>>>> Rabin_karp(vector<vector<ch
 
                         for (int i = 0; i < m; i++)
                         {
-                            h_cur += (h_cur * BASE + grids[r + i + dx[gir]][c + i + dy[gir]] - 'a' + 1) % MOD;
+                            h_cur += (h_cur * BASE + grids[r + i * dx[gir]][c + i * dy[gir]] - 'a' + 1) % MOD;
                         }
 
                         if (h_cur == HashWord)
                         {
                             for (int i = 0; i < m; i++)
                             {
-                                if (grids[r + i + dx[gir]][c + i + dy[gir]] != word[i])
+                                if (grids[r + i * dx[gir]][c + i * dy[gir]] != word[i])
                                 {
                                     match = 0;
                                     break;
@@ -131,7 +131,7 @@ vector<vector<pair<pair<int, int>, pair<int, int>>>> Rabin_karpOperationCount(ve
 
                         for (int i = 0; ++comparisons, i < m; i++)
                         {
-                            h_cur += (h_cur * BASE + grids[r + i + dx[gir]][c + i + dy[gir]] - 'a' + 1) % MOD;
+                            h_cur += (h_cur * BASE + grids[r + i * dx[gir]][c + i * dy[gir]] - 'a' + 1) % MOD;
                         }
                         ++comparisons;
                         if (h_cur == HashWord)
@@ -139,7 +139,7 @@ vector<vector<pair<pair<int, int>, pair<int, int>>>> Rabin_karpOperationCount(ve
                             for (int i = 0; ++comparisons, i < m; i++)
                             {
                                 ++comparisons;
-                                if (grids[r + i + dx[gir]][c + i + dy[gir]] != word[i])
+                                if (grids[r + i * dx[gir]][c + i * dy[gir]] != word[i])
                                 {
                                     match = 0;
                                     break;
