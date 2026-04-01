@@ -4,8 +4,8 @@ const long long BASE = 31;
 const long long MOD = 1e9 + 7;
 
 long long comp_hash(const string &str, int m);
-int dx[] = {0, 0, 1, -1, -1, -1, 1, 1};
-int dy[] = {1, -1, 0, 0, 1, -1, 1, -1};
+int dx[] = {0, 1};
+int dy[] = {1, 0};
 
 long long comp_hash(const string &str, int m)
 {
