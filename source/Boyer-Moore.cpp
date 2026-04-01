@@ -61,13 +61,11 @@ vector<vector<pair<pair<int, int>, pair<int, int>>>> Boyer_Moore(vector<vector<c
             }
         }
 
-
+	if (keyword.size() == 1)
+		continue;
         //exacly the same but for columns
         for(int col = 0 ; col<total_col ; col++){
             int k_size = keyword.size();
-            if(k_size == 1){
-                continue;
-            }
             int tracker = k_size-1;
             while(tracker < total_row){
 
