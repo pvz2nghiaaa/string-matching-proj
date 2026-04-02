@@ -61,36 +61,34 @@ vector<vector<pair<pair<int, int>, pair<int, int>>>> Boyer_Moore(vector<vector<c
             }
         }
 
-	if (keyword.size() == 1)
-		continue;
-        //exacly the same but for columns
-        for(int col = 0 ; col<total_col ; col++){
-            int k_size = keyword.size();
-            int tracker = k_size-1;
-            while(tracker < total_row){
+        if (keyword.size() > 1) //exacly the same but for columns
+            for(int col = 0 ; col<total_col ; col++){
+                int k_size = keyword.size();
+                int tracker = k_size-1;
+                while(tracker < total_row){
 
-                for(int idx = k_size-1; idx>=0 ; idx--){
+                    for(int idx = k_size-1; idx>=0 ; idx--){
 
-                    int idx_from_tracker = tracker-(k_size-1-idx);
+                        int idx_from_tracker = tracker-(k_size-1-idx);
 
-                    if(keyword[idx] != grids[idx_from_tracker][col]){
+                        if(keyword[idx] != grids[idx_from_tracker][col]){
             
-                        int trackerToInt = grids[idx_from_tracker][col] - 'a';
-                        if( charTable[trackerToInt] == -1 ){
-                            tracker += k_size - (tracker - idx_from_tracker);
+                            int trackerToInt = grids[idx_from_tracker][col] - 'a';
+                            if( charTable[trackerToInt] == -1 ){
+                                tracker += k_size - (tracker - idx_from_tracker);
+                            }
+                            else{
+                                tracker += max(1, idx - charTable[trackerToInt]);
+                            }
+                            break;
                         }
-                        else{
-                            tracker += max(1, idx - charTable[trackerToInt]);
+                        if(idx==0){
+                            occurences.push_back({{tracker-(k_size - 1),col},{tracker,col}});
+                            tracker++;
                         }
-                        break;
-                    }
-                    if(idx==0){
-                        occurences.push_back({{tracker-(k_size - 1),col},{tracker,col}});
-                        tracker++;
                     }
                 }
             }
-        }
         result.push_back(occurences);
     }
     return result;
@@ -139,36 +137,35 @@ vector<vector<pair<pair<int, int>, pair<int, int>>>> Boyer_Moore(vector<vector<c
                 }
             }
         }
-	if (keyword.size() == 1)
-		continue;
-        for(int col = 0 ; col<total_col ; col++){
+        if (keyword.size() > 1)
+            for(int col = 0 ; col<total_col ; col++){
 
-            int k_size = keyword.size();
-            int tracker = k_size-1;
-            while(tracker < total_row){
+                int k_size = keyword.size();
+                int tracker = k_size-1;
+                while(tracker < total_row){
 
-                for(int idx = k_size-1; idx>=0 ; idx--){
+                    for(int idx = k_size-1; idx>=0 ; idx--){
 
-                    int idx_from_tracker = tracker-(k_size-1-idx);
+                        int idx_from_tracker = tracker-(k_size-1-idx);
 
-                    if(comparisons++ ,keyword[idx] != grids[idx_from_tracker][col]){
+                        if(comparisons++ ,keyword[idx] != grids[idx_from_tracker][col]){
             
-                        int trackerToInt = grids[idx_from_tracker][col] - 'a';
-                        if( charTable[trackerToInt] == -1 ){
-                            tracker += k_size - (tracker - idx_from_tracker);
+                            int trackerToInt = grids[idx_from_tracker][col] - 'a';
+                            if( charTable[trackerToInt] == -1 ){
+                                tracker += k_size - (tracker - idx_from_tracker);
+                            }
+                            else{
+                                tracker += max(1, idx - charTable[trackerToInt]);
+                            }
+                            break;
                         }
-                        else{
-                            tracker += max(1, idx - charTable[trackerToInt]);
+                        if(idx==0){
+                            occurences.push_back({{tracker-(k_size - 1),col},{tracker,col}});
+                            tracker++;
                         }
-                        break;
-                    }
-                    if(idx==0){
-                        occurences.push_back({{tracker-(k_size - 1),col},{tracker,col}});
-                        tracker++;
                     }
                 }
             }
-        }
         result.push_back(occurences);
     }
     return result;
