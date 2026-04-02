@@ -44,19 +44,19 @@ vector<vector<pair<pair<int, int>, pair<int, int>>>> Rabin_karp(vector<vector<ch
         {
             for (int c = 0; c < cols; c++)
             {
-                for (int gir = 0; gir < 8; gir++)
+                for (int gir = 0; gir < 2; gir++)
                 {
                     int endRow = r + (m - 1) * dx[gir];
                     int endCol = c + (m - 1) * dy[gir];
 
-                    if (endRow > 0 && endRow < rows && endCol > 0 && endCol < cols)
+                    if (endRow >= 0 && endRow < rows && endCol >= 0 && endCol < cols)
                     {
                         long long h_cur = 0;
                         bool match = 1;
 
                         for (int i = 0; i < m; i++)
                         {
-                            h_cur += (h_cur * BASE + grids[r + i * dx[gir]][c + i * dy[gir]] - 'a' + 1) % MOD;
+                            h_cur = (h_cur * BASE + grids[r + i * dx[gir]][c + i * dy[gir]] - 'a' + 1) % MOD;
                         }
 
                         if (h_cur == HashWord)
@@ -119,19 +119,19 @@ vector<vector<pair<pair<int, int>, pair<int, int>>>> Rabin_karpOperationCount(ve
         {
             for (int c = 0; ++comparisons, c < cols; c++)
             {
-                for (int gir = 0; ++comparisons, gir < 8; gir++)
+                for (int gir = 0; ++comparisons, gir < 2; gir++)
                 {
                     int endRow = r + (m - 1) * dx[gir];
                     int endCol = c + (m - 1) * dy[gir];
 
-                    if (++comparisons, endRow > 0 && endRow < rows && endCol > 0 && endCol < cols)
+                    if (++comparisons, endRow >= 0 && endRow < rows && endCol >= 0 && endCol < cols)
                     {
                         long long h_cur = 0;
                         bool match = 1;
 
                         for (int i = 0; ++comparisons, i < m; i++)
                         {
-                            h_cur += (h_cur * BASE + grids[r + i * dx[gir]][c + i * dy[gir]] - 'a' + 1) % MOD;
+                            h_cur = (h_cur * BASE + grids[r + i * dx[gir]][c + i * dy[gir]] - 'a' + 1) % MOD;
                         }
                         ++comparisons;
                         if (h_cur == HashWord)
