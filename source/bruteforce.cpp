@@ -4,7 +4,6 @@ vector<vector<pair<pair<int, int>, pair<int, int>>>> bruteforce(vector<vector<ch
 {
     int r = (int)grids.size();
     int c = (int)grids[0].size();
-    int q = (int)keywords.size();
     vector<vector<pair<pair<int, int>, pair<int, int>>>> occurrences;
 
     for (string keyword: keywords)
@@ -84,7 +83,6 @@ vector<vector<pair<pair<int, int>, pair<int, int>>>> bruteforce(vector<vector<ch
 {
     int r = (int)grids.size();
     int c = (int)grids[0].size();
-    int q = (int)keywords.size();
     comparisons = 0;
     vector<vector<pair<pair<int, int>, pair<int, int>>>> occurrences;
 
