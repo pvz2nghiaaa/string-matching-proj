@@ -6,16 +6,16 @@ using namespace std;
 char* algorithmName = nullptr;
 int IDAlgorithm = -1;
 const char* algorithmPrototypeName[] = {
-	"bf", "rk", "kmp", "bm"
+	"bf", "rk", "kmp", "bm", "ust"
 };
 const char* algorithmFullName[] = {
-	"Brute-Force", "Rabin-Karp", "KMP", "Boyer-Moore"
+	"Brute-Force", "Rabin-Karp", "KMP", "Boyer-Moore", "Ukkonen-suffix-tree"
 };
 vector<vector<pair<pair<int, int>, pair<int, int>>>> (*const listSort[])(vector<vector<char>>&, vector<string>&) = {
-	bruteforce, Rabin_karp, KMP, Boyer_Moore
+	bruteforce, Rabin_karp, KMP, Boyer_Moore, suffix_tree_ukkonen
 };
 vector<vector<pair<pair<int, int>, pair<int, int>>>> (*const listSortComparisonsCount[])(vector<vector<char>>&, vector<string>&, long long&) = {
-	bruteforce, Rabin_karpOperationCount, KMPComparisonCounts, Boyer_Moore
+	bruteforce, Rabin_karpOperationCount, KMPComparisonCounts, Boyer_Moore, suffix_tree_ukkonen
 };
 
 // file name
@@ -27,7 +27,7 @@ vector<vector<pair<pair<int, int>, pair<int, int>>>> result;
 
 void findAlgorithmUsed() {
 	// process algorithm used from algorithm names
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < 5; i++) {
 		if (algorithmName && strcmp(algorithmName, algorithmPrototypeName[i]) == 0)
 			return IDAlgorithm = i, void();
 	}

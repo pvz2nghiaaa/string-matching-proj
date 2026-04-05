@@ -11,7 +11,7 @@ Step 3: The usage is as follows:
 	crossword[.exe] -a [algorithm] -i [input_file] -o [output_file]
 
 	Options:
-		-a [algorithm]		Select algorithm: bf, rk, kmp, bm (respectively referred to as brute-force, Rabin-Karp, Knuth-Morris-Pratt, Boyer-Moore algorithms)
+		-a [algorithm]		Select algorithm: bf, rk, kmp, bm, ust (respectively referred to as brute-force, Rabin-Karp, Knuth-Morris-Pratt, Boyer-Moore, Ukkonen-suffix-tree algorithms)
 		-i [input_file]		Path to user-provided data file
 		-o [output_file]	Path to the result output file
 
