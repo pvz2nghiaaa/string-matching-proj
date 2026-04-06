@@ -164,36 +164,35 @@ vector<vector<pair<pair<int, int>, pair<int, int>>>> Rabin_karp(vector<vector<ch
     return all_res;
 }
 
-vector<long long> precompute_OC(int n, long long &comparisons)
-{
-    vector<long long> p(n + 1);
-    p[0] = 1;
-    for (int i = 1; ++comparisons, i <= n; i++)
-    {
-        p[i] = (p[i - 1] * BASE) % MOD;
-    }
-    return p;
-}
+// vector<long long> precompute_OC(int n, long long &comparisons)
+// {
+//     vector<long long> p(n + 1);
+//     p[0] = 1;
+//     for (int i = 1; ++comparisons, i <= n; i++)
+//     {
+//         p[i] = (p[i - 1] * BASE) % MOD;
+//     }
+//     return p;
+// }
 
-long long comp_hash_OC(const string &str, int m, long long &comparisons)
-{
-    long long h = 0;
-    for (int i = 0; ++comparisons, i < m; i++)
-    {
-        h = (h * BASE + (str[i] - 'a' + 1)) % MOD;
-    }
-    return h;
-}
+// long long comp_hash_OC(const string &str, int m, long long &comparisons)
+// {
+//     long long h = 0;
+//     for (int i = 0; ++comparisons, i < m; i++)
+//     {
+//         h = (h * BASE + (str[i] - 'a' + 1)) % MOD;
+//     }
+//     return h;
+// }
 
 vector<vector<pair<pair<int, int>, pair<int, int>>>> Rabin_karpOperationCount(vector<vector<char>> &grids, vector<string> &keywords, long long &comparisons)
 {
     int rows = grids.size();
     int cols = (rows > 0) ? grids[0].size() : 0;
     int max_pos = max(rows, cols);
-    ++comparisons;
 
     // for rolling hash
-    vector<long long> P = precompute_OC(max_pos, comparisons);
+    vector<long long> P = precompute(max_pos);
     vector<vector<pair<pair<int, int>, pair<int, int>>>> all_res;
 
     for (const auto &word : keywords)
@@ -207,24 +206,24 @@ vector<vector<pair<pair<int, int>, pair<int, int>>>> Rabin_karpOperationCount(ve
             continue;
         }
 
-        long long HashWord = comp_hash_OC(word, m, comparisons);
+        long long HashWord = comp_hash(word, m);
         long long Pm_1 = P[m - 1];
 
-        if (++comparisons, cols >= m && (++comparisons, m > 1))
+        if (cols >= m && (m > 1))
         {
-            for (int r = 0; ++comparisons, r < rows; r++)
+            for (int r = 0; r < rows; r++)
             {
                 long long curHash = 0;
-                for (int i = 0; ++comparisons, i < m; i++)
+                for (int i = 0; i < m; i++)
                 {
                     curHash = (curHash * BASE + (grids[r][i] - 'a' + 1)) % MOD;
                 }
 
                 // check the fist window
-                if (++comparisons, curHash == HashWord)
+                if (curHash == HashWord)
                 {
                     bool match = true;
-                    for (int i = 0; ++comparisons, i < m; i++)
+                    for (int i = 0; i < m; i++)
                     {
                         if (++comparisons, grids[r][i] != word[i])
                         {
@@ -232,12 +231,12 @@ vector<vector<pair<pair<int, int>, pair<int, int>>>> Rabin_karpOperationCount(ve
                             break;
                         }
                     }
-                    if (++comparisons, match)
+                    if (match)
                         res.push_back({{r, 0}, {r, m - 1}});
                 }
 
                 // continue to slide to the end of r
-                for (int c = 1; ++comparisons, c <= cols - m; c++)
+                for (int c = 1; c <= cols - m; c++)
                 {
                     long long old_char = grids[r][c - 1] - 'a' + 1; // first char in the prev check
                     long long new_char = grids[r][c + m - 1] - 'a' + 1;
@@ -246,10 +245,10 @@ vector<vector<pair<pair<int, int>, pair<int, int>>>> Rabin_karpOperationCount(ve
                     curHash = (curHash - (old_char * Pm_1) % MOD + MOD) % MOD;
                     curHash = (curHash * BASE + new_char) % MOD;
 
-                    if (++comparisons, curHash == HashWord)
+                    if (curHash == HashWord)
                     {
                         bool match = true;
-                        for (int i = 0; ++comparisons, i < m; i++)
+                        for (int i = 0; i < m; i++)
                         {
                             if (++comparisons, grids[r][c + i] != word[i])
                             {
@@ -257,28 +256,28 @@ vector<vector<pair<pair<int, int>, pair<int, int>>>> Rabin_karpOperationCount(ve
                                 break;
                             }
                         }
-                        if (++comparisons, match)
+                        if (match)
                             res.push_back({{r, c}, {r, c + m - 1}});
                     }
                 }
             }
         }
         // remain same as above code.-.
-        if (++comparisons, rows >= m)
+        if (rows >= m)
         {
-            for (int c = 0; ++comparisons, c < cols; c++)
+            for (int c = 0; c < cols; c++)
             {
                 long long curHash = 0;
 
-                for (int i = 0; ++comparisons, i < m; i++)
+                for (int i = 0; i < m; i++)
                 {
                     curHash = (curHash * BASE + (grids[i][c] - 'a' + 1)) % MOD;
                 }
 
-                if (++comparisons, curHash == HashWord)
+                if (curHash == HashWord)
                 {
                     bool match = true;
-                    for (int i = 0; ++comparisons, i < m; i++)
+                    for (int i = 0; i < m; i++)
                     {
                         if (++comparisons, grids[i][c] != word[i])
                         {
@@ -286,11 +285,11 @@ vector<vector<pair<pair<int, int>, pair<int, int>>>> Rabin_karpOperationCount(ve
                             break;
                         }
                     }
-                    if (++comparisons, match)
+                    if (match)
                         res.push_back({{0, c}, {m - 1, c}});
                 }
 
-                for (int r = 1; ++comparisons, r <= rows - m; r++)
+                for (int r = 1; r <= rows - m; r++)
                 {
                     long long old_char = grids[r - 1][c] - 'a' + 1;
                     long long new_char = grids[r + m - 1][c] - 'a' + 1;
@@ -298,10 +297,10 @@ vector<vector<pair<pair<int, int>, pair<int, int>>>> Rabin_karpOperationCount(ve
                     curHash = (curHash - (old_char * Pm_1) % MOD + MOD) % MOD;
                     curHash = (curHash * BASE + new_char) % MOD;
 
-                    if (++comparisons, curHash == HashWord)
+                    if (curHash == HashWord)
                     {
                         bool match = true;
-                        for (int i = 0; ++comparisons, i < m; i++)
+                        for (int i = 0; i < m; i++)
                         {
                             if (++comparisons, grids[r + i][c] != word[i])
                             {
@@ -309,7 +308,7 @@ vector<vector<pair<pair<int, int>, pair<int, int>>>> Rabin_karpOperationCount(ve
                                 break;
                             }
                         }
-                        if (++comparisons, match)
+                        if (match)
                             res.push_back({{r, c}, {r + m - 1, c}});
                     }
                 }
