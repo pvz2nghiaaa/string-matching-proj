@@ -8,11 +8,8 @@ int randInt(int l, int r) {
     return uniform_int_distribution<int>(l, r)(rng);
 }
 
-// bias nhẹ để tạo case thú vị (không quá cực đoan)
 char randChar() {
-    int x = randInt(1, 100);
-    if (x <= 40) return 'a';          // 40% 'a'
-    return 'a' + randInt(0, 25);      // còn lại random
+    return 'a' + randInt(0, 25);
 }
 
 string randString(int len) {
@@ -22,139 +19,148 @@ string randString(int len) {
     return s;
 }
 
-// ================== 1. NO MATCH ==================
-void generateNoMatch(int R, int C, int K,
-                     vector<vector<char>>& grid,
-                     vector<string>& keywords) {
-
-    grid.assign(R, vector<char>(C));
-
-    keywords.clear();
-
-    // random chọn kiểu test
-    bool nearlyMatchMode = randInt(0, 1); // 0 = no match dễ, 1 = nearly match
-
-    if (!nearlyMatchMode) {
-        // ================== CASE 1: NO MATCH THUẦN ==================
-        // grid random KHÔNG chứa 'z'
-        for (int i = 0; i < R; i++)
-            for (int j = 0; j < C; j++) {
-                char ch = randChar();
-                if (ch == 'z') ch = 'y';
-                grid[i][j] = ch;
-            }
-
-        // keyword toàn 'z' → chắc chắn không match
-        for (int i = 0; i < K; i++) {
-            int len = randInt(3, 10);
-            keywords.push_back(string(len, 'z'));
-        }
-    } else {
-        // ================== CASE 2: NEARLY MATCH ==================
-        // grid: mostly 'a'
-        for (int i = 0; i < R; i++)
-            for (int j = 0; j < C; j++) {
-                if (randInt(1, 100) <= 85)
-                    grid[i][j] = 'a';
-                else
-                    grid[i][j] = 'a' + randInt(0, 25);
-            }
-
-        // keyword: aaaa...ab
-        for (int i = 0; i < K; i++) {
-            int len = randInt(5, 12);
-
-            string s(len - 1, 'a'); // match gần hết
-            s += 'b';               // fail ở cuối
-
-            keywords.push_back(s);
-        }
+// ================= CHECK + PLACE =================
+bool canPlaceHorizontal(vector<vector<char>>& grid, int row, int col, const string& s) {
+    for (int j = 0; j < s.size(); j++) {
+        if (grid[row][col + j] != '#' && grid[row][col + j] != s[j])
+            return false;
     }
+    return true;
 }
 
-// ================== 2. SINGLE MATCH ==================
-void generateSingleMatch(int R, int C, int K,
-                         vector<vector<char>>& grid,
-                         vector<string>& keywords) {
-
-    grid.assign(R, vector<char>(C));
-
-    // random grid
-    for (int i = 0; i < R; i++)
-        for (int j = 0; j < C; j++)
-            grid[i][j] = randChar();
-
-    keywords.clear();
-
-    for (int i = 0; i < K; i++) {
-        int len = randInt(3, min(10, max(R, C)));
-
-        string s = randString(len);
-
-        // đảm bảo chèn được
-        bool horizontal = (len <= C) ? randInt(0, 1) : false;
-
-        if (horizontal) {
-            int row = randInt(0, R - 1);
-            int col = randInt(0, C - len);
-
-            for (int j = 0; j < len; j++)
-                grid[row][col + j] = s[j];
-        } else {
-            int col = randInt(0, C - 1);
-            int row = randInt(0, R - len);
-
-            for (int j = 0; j < len; j++)
-                grid[row + j][col] = s[j];
-        }
-
-        keywords.push_back(s);
+bool canPlaceVertical(vector<vector<char>>& grid, int row, int col, const string& s) {
+    for (int j = 0; j < s.size(); j++) {
+        if (grid[row + j][col] != '#' && grid[row + j][col] != s[j])
+            return false;
     }
+    return true;
 }
 
-// ================== 3. MULTIPLE MATCH ==================
-void generateMultipleMatch(int R, int C, int K,
-                          vector<vector<char>>& grid,
-                          vector<string>& keywords) {
+void placeHorizontal(vector<vector<char>>& grid, int row, int col, const string& s) {
+    for (int j = 0; j < s.size(); j++)
+        grid[row][col + j] = s[j];
+}
 
-    grid.assign(R, vector<char>(C));
+void placeVertical(vector<vector<char>>& grid, int row, int col, const string& s) {
+    for (int j = 0; j < s.size(); j++)
+        grid[row + j][col] = s[j];
+}
 
-    // random grid
-    for (int i = 0; i < R; i++)
-        for (int j = 0; j < C; j++)
-            grid[i][j] = randChar();
+// ================= RANDOM DATA =================
+void generateRandomData(int R, int C, int K,
+                        vector<vector<char>>& grid,
+                        vector<string>& keywords) {
 
+    // grid trống
+    grid.assign(R, vector<char>(C, '#'));
     keywords.clear();
 
     for (int i = 0; i < K; i++) {
         int len = randInt(3, min(10, max(R, C)));
         string s = randString(len);
 
+        int type = randInt(1, 3); // 1: NoMatch, 2: Single, 3: Multiple
+
+        if (type == 1) {
+            // ❌ NoMatch
+            s = string(len, 'z');
+        }
+        else {
+            int times = (type == 2) ? 1 : randInt(2, 5);
+
+            for (int t = 0; t < times; t++) {
+                int attempts = 50;
+
+                while (attempts--) {
+                    bool horizontal = (len <= C) ? randInt(0, 1) : false;
+
+                    if (horizontal) {
+                        int row = randInt(0, R - 1);
+                        int col = randInt(0, C - len);
+
+                        if (canPlaceHorizontal(grid, row, col, s)) {
+                            placeHorizontal(grid, row, col, s);
+                            break;
+                        }
+                    } else if (len <= R) {
+                        int col = randInt(0, C - 1);
+                        int row = randInt(0, R - len);
+
+                        if (canPlaceVertical(grid, row, col, s)) {
+                            placeVertical(grid, row, col, s);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        keywords.push_back(s);
+    }
+
+    // fill ô trống
+    for (int i = 0; i < R; i++)
+        for (int j = 0; j < C; j++)
+            if (grid[i][j] == '#')
+                grid[i][j] = randChar();
+}
+
+// ================= REPETITIVE DATA =================
+void generateRepetitiveData(int R, int C, int K,
+                            vector<vector<char>>& grid,
+                            vector<string>& keywords) {
+
+    grid.assign(R, vector<char>(C, '#'));
+    keywords.clear();
+
+    for (int i = 0; i < K; i++) {
+        int len = randInt(5, 12);
+
+        string s;
+        if (randInt(0, 1))
+            s = string(len - 1, 'a') + 'b'; // nearly match
+        else
+            s = string(len, 'a');           // full match
+
         keywords.push_back(s);
 
-        int times = randInt(2, 6); // xuất hiện nhiều lần
+        int times = randInt(1, 4);
 
         for (int t = 0; t < times; t++) {
-            bool horizontal = (len <= C) ? randInt(0, 1) : false;
+            int attempts = 50;
 
-            if (horizontal) {
-                int row = randInt(0, R - 1);
-                int col = randInt(0, C - len);
+            while (attempts--) {
+                bool horizontal = (len <= C) ? randInt(0, 1) : false;
 
-                for (int j = 0; j < len; j++)
-                    grid[row][col + j] = s[j];
-            } else if (len <= R) {
-                int col = randInt(0, C - 1);
-                int row = randInt(0, R - len);
+                if (horizontal) {
+                    int row = randInt(0, R - 1);
+                    int col = randInt(0, C - len);
 
-                for (int j = 0; j < len; j++)
-                    grid[row + j][col] = s[j];
+                    if (canPlaceHorizontal(grid, row, col, s)) {
+                        placeHorizontal(grid, row, col, s);
+                        break;
+                    }
+                } else if (len <= R) {
+                    int col = randInt(0, C - 1);
+                    int row = randInt(0, R - len);
+
+                    if (canPlaceVertical(grid, row, col, s)) {
+                        placeVertical(grid, row, col, s);
+                        break;
+                    }
+                }
             }
         }
     }
+
+    // fill phần còn lại bằng 'a'
+    for (int i = 0; i < R; i++)
+        for (int j = 0; j < C; j++)
+            if (grid[i][j] == '#')
+                grid[i][j] = 'a';
 }
 
-// ================== WRITE ==================
+// ================= WRITE FILE =================
 void writeToFile(const string& filename,
                  const vector<vector<char>>& grid,
                  const vector<string>& keywords) {
@@ -169,7 +175,7 @@ void writeToFile(const string& filename,
     for (int i = 0; i < R; i++) {
         for (int j = 0; j < C; j++) {
             out << grid[i][j];
-            // if (j < C - 1) out << " ";
+            if (j < C - 1) out << " ";
         }
         out << "\n";
     }
@@ -179,7 +185,7 @@ void writeToFile(const string& filename,
         out << s << "\n";
 }
 
-// ================== MAIN ==================
+// ================= MAIN =================
 int main(int argc, char* argv[]) {
     if (argc < 7) {
         cerr << "Usage: ./gen R C K mode output_file seed\n";
@@ -199,11 +205,9 @@ int main(int argc, char* argv[]) {
     vector<string> keywords;
 
     if (mode == 1)
-        generateNoMatch(R, C, K, grid, keywords);
+        generateRandomData(R, C, K, grid, keywords);
     else if (mode == 2)
-        generateSingleMatch(R, C, K, grid, keywords);
-    else if (mode == 3)
-        generateMultipleMatch(R, C, K, grid, keywords);
+        generateRepetitiveData(R, C, K, grid, keywords);
     else {
         cerr << "Invalid mode\n";
         return 1;
@@ -211,5 +215,7 @@ int main(int argc, char* argv[]) {
 
     writeToFile(filename, grid, keywords);
 
-    cout << "Generated " << filename << " (mode=" << mode << ", seed=" << seed << ")\n";
+    cout << "Generated " << filename
+         << " (mode=" << mode
+         << ", seed=" << seed << ")\n";
 }
