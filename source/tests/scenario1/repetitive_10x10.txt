@@ -1,0 +1,22 @@
+10 10
+a a a a a a a a b a
+a a a a a a a a a b
+a a a a a a a a a b
+a a a a a a a b a a
+a a a a a a a b a a
+a a a a a a a a a a
+a a a a a a a a b a
+a a a a a a a a b a
+a b a a a a b a a a
+b a b a b b a a a b
+10
+aaaaaaab
+aaaaaaaab
+aaaaa
+aaaaaa
+aaaaaaaab
+aaaaaaaaab
+aaaaaaab
+aaaaaab
+aaaaaaaaaab
+aaaaaaa
