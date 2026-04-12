@@ -63,18 +63,17 @@ vector<vector<pair<pair<int, int>, pair<int, int>>>> KMPComparisonCounts(vector<
 {
 	comparisons = 0;
 	vector<vector<pair<pair<int, int>, pair<int, int>>>> total_res;
-	comparisons += 3;
 	if (grids.empty() || grids[0].empty() || keywords.empty()) return total_res;
 	int r = grids.size(),
 		c = grids[0].size();
-	for (int j = 0; ++comparisons, j < keywords.size(); j++){
+	for (int j = 0; j < keywords.size(); j++){
 		vector<pair<pair<int, int>, pair<int, int>>> res;
 		vector<int> lps(keywords[j].size(), 0);
 		// precompute 
 		int k = 0;
 		int len = keywords[j].size();
-		for (int i = 1; ++comparisons, i < len; i++){
-			while ((++comparisons, k > 0) && (++comparisons, keywords[j][i] != keywords[j][k]))
+		for (int i = 1; i < len; i++){
+			while (k > 0 && (++comparisons, keywords[j][i] != keywords[j][k]))
 				k = lps[k-1];
 			if (++comparisons, keywords[j][i] == keywords[j][k])
 				k++;
@@ -82,32 +81,32 @@ vector<vector<pair<pair<int, int>, pair<int, int>>>> KMPComparisonCounts(vector<
 		}
 
 		// row, horizontal
-		for (int row = 0; ++comparisons, row < r; row++){
+		for (int row = 0; row < r; row++){
 			// vector<int> match(c, 0);
 			int k = 0;
-			for (int i = 0; ++comparisons, i < c; i++){
-				while ((++comparisons, k > 0) && (++comparisons, grids[row][i] != keywords[j][k]))
+			for (int i = 0; i < c; i++){
+				while ((k > 0) && (++comparisons, grids[row][i] != keywords[j][k]))
 					k = lps[k-1];
 				if (++comparisons, grids[row][i] == keywords[j][k])
 					k++;
 				// match[i] = k;
-				if (++comparisons, k == len){
+				if (k == len){
 					res.push_back({{row, i-k+1},{row, i}});
 					k = lps[k-1];
 				}
 			}
 		}
 		// col, vertical
-		if (++comparisons, len > 1){
-			for (int col = 0; ++comparisons, col < c; col++){
+		if (len > 1){
+			for (int col = 0; col < c; col++){
 				int k = 0;
-				for (int i = 0; ++comparisons, i < r; i++){
-					while ((++comparisons, k > 0) && (++comparisons, grids[i][col] != keywords[j][k]))
+				for (int i = 0; i < r; i++){
+					while (k > 0 && (++comparisons, grids[i][col] != keywords[j][k]))
 						k = lps[k-1];
 					if (++comparisons, grids[i][col] == keywords[j][k])
 						k++;
 					// match[i] = k;
-					if (++comparisons, k == len){
+					if (k == len){
 						res.push_back({{i-k+1, col},{i, col}});
 						k = lps[k-1];
 					}
