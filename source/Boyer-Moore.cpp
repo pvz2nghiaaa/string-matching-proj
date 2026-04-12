@@ -93,6 +93,9 @@ vector<int> buildShiftSuffixTable(const string& keyword){
             shiftSuffixTable[mismatch_index] = slide_distance;
         }
     }
+    //bug here create extra space but doesn't account for change mee badd
+    shiftSuffixTable[n] = shiftSuffixTable[0];
+
     return shiftSuffixTable;
 }
 
@@ -240,11 +243,13 @@ vector<vector<pair<pair<int, int>, pair<int, int>>>> Boyer_Moore(vector<vector<c
                 tracker += max(bad, good);
             }
         }
-    if (keyword.size() == 1)
-        continue;
+
         for(int col = 0 ; col<total_col ; col++){
 
             int k_size = keyword.size();
+            if(k_size == 1){
+                continue;
+            }
             int tracker = k_size-1;
             while(tracker < total_row){
                 
