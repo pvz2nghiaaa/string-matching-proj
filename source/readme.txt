@@ -19,9 +19,7 @@ Step 3: The usage is as follows:
 		crossword.exe -a kmp -i <filepath>/source/tests/puzzle01.txt -o solution.txt
 
 About the 'source' folder:
-	The 'source' folder contains our source code (.cpp and .h) and a subfolder named 'tests' including our generated test cases (input only). These test files are categorized into 2 types of test cases:
-	- Input files with prefix 'scenario1' — number of keywords is fixed to a small number, and grid sizes range from small (10 x 10) to large (500 x 500).
-	- Input files with prefix 'scenario2' — grid size is fixed to a medium value (100 x 100), and number of keywords ranges from small (10) to large (100).
+	The 'source' folder contains our source code (.cpp and .h) and a subfolder named 'tests' including our generated test cases (input only). 
 
 About your own test case:
 	Your input file must be formatted to follow the structure below (otherwise undefined behavior may occur):
@@ -38,6 +36,20 @@ About your own test case:
 	2
 	ex
 	xp
+
+	Test cases are organized based on two factors:
+		- Scenarios:
+			+ Scenario 1: Fix number of keywords (K = 10), vary grid size (10×10, 100x100 500×500).
+			+ Scenario 2: Fix grid size (100×100), vary number of keywords (K = 10, 50, 100).
+		- Data Types:
+			+ Random: grid is random, keywords may be NoMatch, SingleMatch, or MultipleMatch.
+			+ Repetitive: grid contains repeated patterns, includes full match and near-match cases.
+	File Naming:
+		- Scenario1: <type>_<R>x<C>.txt
+		- Scenario2: <type>_k<K>.txt
+	where <type> ∈ {random, repetitive}
+		  <R, C> ∈ {10, 100, 500}
+		  <K> ∈ {10, 50, 100}
 
 About output format:
 	- For each keyword in the input order:
