@@ -249,7 +249,7 @@ vector<vector<pair<pair<int, int>, pair<int, int>>>> Rabin_karpOperationCount(ve
                         bool match = true;
                         for (int i = 0; i < m; i++)
                         {
-                            if (grids[r][c + i] != word[i])
+                            if (comparisons++; grids[r][c + i] != word[i])
                             {
                                 match = false;
                                 break;
@@ -301,7 +301,7 @@ vector<vector<pair<pair<int, int>, pair<int, int>>>> Rabin_karpOperationCount(ve
                         bool match = true;
                         for (int i = 0; i < m; i++)
                         {
-                            if (grids[r + i][c] != word[i])
+                            if (comparisons++, grids[r + i][c] != word[i])
                             {
                                 match = false;
                                 break;
